@@ -1,0 +1,8 @@
+Sandro 31 80.0
+Andre 22 67.8
+Luis 39 74.3
+Joao 21 59.0
+Fernando 26 60.2
+Antonio 27 82.3
+Tiago 24 64.5
+Cristiano 28 82.2

@@ -1,0 +1,84 @@
+plugins {
+    id 'java'
+    id 'application'
+    id 'maven-publish'
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.json:json:20210307' // Adicione a dependência JSON aqui
+    implementation 'com.googlecode.json-simple:json-simple:1.1.1' // Adicione a dependência JSON Simple aqui
+    implementation group: 'commons-io', name: 'commons-io', version: '2.7' // Adicione a dependência para Commons IO (entrada/saída de arquivos)
+}
+
+
+configurations {
+    javadocDependencies.extendsFrom(implementation)
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class' : 'main.java.com.SandroCunha8200785.NameListToJSON.NameListToJSON'
+    }
+}
+
+application {
+    mainClassName = 'main.java.com.SandroCunha8200785.NameListToJSON.NameListToJSON' 
+}
+
+
+
+task generateJavadoc(type: Javadoc) {
+    source = sourceSets.main.allJava
+    classpath += configurations.javadocDependencies
+    destinationDir = file("$buildDir/docs/javadoc")
+}
+
+task packageJavadoc(type: Zip, dependsOn: generateJavadoc) {
+    from generateJavadoc.destinationDir
+    archiveFileName = 'javadoc.zip'
+}
+
+task runProgram(type: JavaExec) {
+    main = 'main.java.com.SandroCunha8200785.NameListToJSON.NameListToJSON' 
+    classpath = sourceSets.main.runtimeClasspath
+}
+
+
+task packageAll(type: Zip, dependsOn: [jar, packageJavadoc,  runProgram]) {
+    from jar
+    from packageJavadoc
+    from 'src/main/Resources/NameList.json'
+    archiveFileName = 'NameList.zip'
+    into('Artefactos')
+    
+}
+
+build.dependsOn packageAll
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+
+            groupId = 'com.sandrocunha8200785.NameListToJson' // Substitua pelo seu groupId
+            artifactId = 'NameListToJson' // Substitua pelo seu artifactId
+            version = '1.0' // Substitua pela versão desejada
+
+            artifact source: tasks.packageAll.archivePath, classifier: 'all', extension: 'zip'
+        }
+    }
+    repositories {
+        mavenLocal() {
+        
+            url = layout.buildDirectory.dir('Repositorio')
+        }
+    }
+}
+
+
+
