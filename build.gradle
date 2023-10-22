@@ -67,7 +67,7 @@ publishing {
 
             groupId = 'com.sandrocunha8200785.NameListToJson' // Substitua pelo seu groupId
             artifactId = 'NameListToJson' // Substitua pelo seu artifactId
-            version = '1.0' // Substitua pela versão desejada
+            version = '1.0.1' // Substitua pela versão desejada
 
             artifact source: tasks.packageAll.archivePath, classifier: 'all', extension: 'zip'
         }

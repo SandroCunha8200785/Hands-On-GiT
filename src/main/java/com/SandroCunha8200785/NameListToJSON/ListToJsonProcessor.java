@@ -107,6 +107,8 @@ public class ListToJsonProcessor {
             personObject.put("Peso", person.getWeight());
             
             personList.add(personObject);
+
+            System.out.println("\nPessoa Adicionada ao JSON: " + person.toString());
         }
 
         JSONObject jsonContainer = new JSONObject();
